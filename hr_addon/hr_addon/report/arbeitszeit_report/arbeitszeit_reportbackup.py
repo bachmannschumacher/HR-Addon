@@ -4,6 +4,25 @@
 import frappe
 from frappe import _
 
+# Function to get the employee ID of the current logged-in user
+def get_employee_id():
+    # Get the current user
+    current_user = frappe.session.user
+
+    # Fetch the user document
+    user_doc = frappe.get_doc("Employee", {"user_id": current_user})
+
+    # Check if the user document exists
+    if user_doc:
+        # Retrieve the employee ID from the user document
+        employee_id = user_doc.employee
+
+        # Print or use the employee ID as needed
+        print(f"The employee ID of {current_user} is: {employee_id}")
+        return employee_id
+    else:
+        print(f"User document not found for {current_user}")
+        return None
 
 def execute(filters=None):
 	columns, data = [], []
@@ -16,12 +35,15 @@ def execute(filters=None):
 		condition_date = "AND log_date BETWEEN '"+ filters.date_from_filter + \
         "' AND '" + filters.date_to_filter + "'"
 
-	if filters.get("employee_id"):
-		empid = filters.get("employee_id")
-		condition_employee += f" AND employee = '{empid}'"
-	# #{'fieldname':'employee','label':'Employee','width':160},
+	employee_id = get_employee_id()
+	condition_employee += f" AND employee = '{employee_id}'"
+
+	# if filters.get("employee_id"):
+		# empid = filters.get("employee_id")
+		# condition_employee += f" AND employee = '{empid}'"
 	# {'fieldname':'target_hours','label':'Target Hours','width':80},
 	columns = [		
+		{'fieldname':'employee','label':'Employee', 'fieldtype': 'Link', 'options': 'Employee','width':160},
 		{'fieldname':'log_date','label':'Date','width':110},		
 		{'fieldname':'name','label':'Work Day',  "fieldtype": "Link", "options": "Workday", 'width':200,},		
 		{'fieldname':'status','label':'Status', "width": 80},
