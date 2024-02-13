@@ -2,12 +2,14 @@
 // For license information, please see license.txt
 /* eslint-disable */
 
-frappe.query_reports["Arbeitszeit Uebersicht Report"] = {
+frappe.query_reports["Arbeitszeit Details Report"] = {
 	"filters": [
 		{
 			"fieldname": "date_from_filter",
 			"label": __("From Date"),
-			"fieldtype": "Date",
+			"fieldtype": "Read Only",
+			// "fieldtype": "Date",
+			// "default": frappe.datetime.add_months(frappe.datetime.get_today(), -1),
 			"default": frappe.format('2024-01-01', {fieldtype: 'Date'}),
 			"reqd": 1,
 			"width": "35px"
@@ -25,15 +27,7 @@ frappe.query_reports["Arbeitszeit Uebersicht Report"] = {
 			"label": __("Employee Id"),
 			"fieldtype": "Link",
 			"options": "Employee",
-			"reqd": 0,
-			"width": "35px"
-		},
-		{
-			"fieldname": "department",
-			"label": __("Department"),
-			"fieldtype": "Link",
-			"options": "Department",
-			"reqd": 0,
+			"reqd": 1,
 			"width": "35px"
 		},
 	],
