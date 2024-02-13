@@ -81,11 +81,18 @@ def view_actual_employee_log(aemployee, adate):
     # create list
     employee_default_work_hour = get_employee_default_work_hour(aemployee,adate)[0]
     break_minutes = employee_default_work_hour.break_minutes
-    wwh = frappe.db.get_list(doctype="Weekly Working Hours", filters={"employee": aemployee}, fields=["name", "no_break_hours", "set_target_hours_to_zero_when_date_is_holiday"])
+    wwh = frappe.db.get_list(doctype="Weekly Working Hours", filters={"employee": aemployee}, fields=["name", "no_break_hours", "additional_break_long_hours", "set_target_hours_to_zero_when_date_is_holiday"])
+
     no_break_hours = True if len(wwh) > 0 and wwh[0]["no_break_hours"] == 1 else False
+    additional_break_long_hours = True if len(wwh) > 0 and wwh[0]["additional_break_long_hours"] == 1 else False
+
     if no_break_hours:
         if hours_worked/60/60 < 6:
             break_minutes = 0
+
+    if additional_break_long_hours:
+        if hours_worked/60/60 > 9:
+            break_minutes = 45
 
     target_hours = employee_default_work_hour.hours
     if len(wwh) > 0 and wwh[0]["set_target_hours_to_zero_when_date_is_holiday"] == 1:

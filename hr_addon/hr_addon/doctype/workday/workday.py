@@ -67,6 +67,16 @@ def process_bulk_workday(data):
 				workday.total_break_seconds = 0
 				workday.actual_working_hours = workday.hours_worked
 
+		# for german law we need to apply 45 min of break hours if working over 9 hours
+		if float(workday.hours_worked) > 9:
+			wwh = frappe.db.get_list(doctype="Weekly Working Hours", filters={"employee": workday.employee}, fields=["name", "additional_break_long_hours"])
+			
+			additional_break_long_hours = True if len(wwh) > 0 and wwh[0]["additional_break_long_hours"] == 1 else False
+			if additional_break_long_hours:
+				workday.expected_break_hours = 0.75
+				workday.total_break_seconds = 0.75*60*60
+				workday.actual_working_hours = float(workday.hours_worked) - float(workday.expected_break_hours)
+
 		# lenght of single must be greater than zero
 		if((not single[0]["items"] is None) and (len(single[0]["items"]) > 0)):
 			workday.first_checkin = c_single[0].time

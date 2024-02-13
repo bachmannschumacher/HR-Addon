@@ -34,11 +34,14 @@ frappe.ui.form.on('Weekly Working Hours', {
 			});
 			
 		}
-	}
+	},
 	
 	// refresh: function(frm) {
 
 	// }
+	before_save: function(frm) {
+		frm.get_total_hours(frm)
+	}
 });
 
 frappe.ui.form.on('Daily Hours Detail',{
@@ -54,7 +57,7 @@ frappe.ui.form.on('Daily Hours Detail',{
 		frm.refresh_field('hours');
 		
 	},
-	
+
 	hours_remove: function(frm,cdt,cdn){
 		frm.get_total_hours(frm);
 	}

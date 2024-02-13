@@ -1,7 +1,7 @@
 {
  "actions": [],
  "allow_rename": 1,
- "autoname": "field:title_hour",
+ "autoname": "format:WWH-{YYYY}-{employee}-{####}",
  "creation": "2022-05-05 01:42:08.757292",
  "doctype": "DocType",
  "editable_grid": 1,
@@ -19,8 +19,10 @@
   "weekly_working_hours_section",
   "hours",
   "section_break_11",
+  "column_break_tmih",
   "total_work_hours",
   "no_break_hours",
+  "additional_break_long_hours",
   "set_target_hours_to_zero_when_date_is_holiday",
   "column_break_14",
   "total_hours_time",
@@ -135,24 +137,35 @@
    "options": "Company"
   },
   {
-   "default": "0",
+   "default": "1",
    "fieldname": "no_break_hours",
    "fieldtype": "Check",
    "label": "No break hours if target hours is less than 6 hours"
   },
   {
-   "default": "0",
+   "default": "1",
    "fieldname": "set_target_hours_to_zero_when_date_is_holiday",
    "fieldtype": "Check",
    "label": "Set Target Hours to Zero when date is holiday"
+  },
+  {
+   "fieldname": "column_break_tmih",
+   "fieldtype": "Column Break"
+  },
+  {
+   "default": "1",
+   "fieldname": "additional_break_long_hours",
+   "fieldtype": "Check",
+   "label": "45min break if target hours are more than 9 hours"
   }
  ],
  "is_submittable": 1,
  "links": [],
- "modified": "2023-07-27 09:16:56.101160",
+ "modified": "2024-02-12 13:26:35.851678",
  "modified_by": "Administrator",
  "module": "HR Addon",
  "name": "Weekly Working Hours",
+ "naming_rule": "Expression",
  "owner": "Administrator",
  "permissions": [
   {
@@ -182,5 +195,6 @@
  ],
  "sort_field": "modified",
  "sort_order": "DESC",
+ "states": [],
  "track_changes": 1
 }
