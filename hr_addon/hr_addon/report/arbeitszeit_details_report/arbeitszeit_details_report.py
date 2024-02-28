@@ -6,7 +6,7 @@ from frappe import _
 
 def execute(filters=None):
 	columns, data = [], []
-	condition_date,condition_employee = "",""
+	condition_date,condition_employee,condition_empl_correction = "","",""
 	if filters.date_from_filter and filters.date_to_filter :
 		if filters.date_from_filter == None:
 			filters.date_from_filter = frappe.datetime.get_today()
@@ -18,6 +18,7 @@ def execute(filters=None):
 	if filters.get("employee_id"):
 		empid = filters.get("employee_id")
 		condition_employee += f" AND wd.employee = '{empid}'"
+		condition_empl_correction += f"AND employee = '{empid}'"
 
 	# {'fieldname':'target_hours','label':'Target Hours','width':80},
 	columns = [		
@@ -99,6 +100,8 @@ def execute(filters=None):
 						SUM(IFNULL(correction,0)*60*60) as sum_correction 
 				FROM 
 						`tabFlexitimeCorrection` 
+				WHERE 
+						docstatus < 2 %s 
 				GROUP BY 
 						employee
 				) fc)
@@ -141,7 +144,7 @@ def execute(filters=None):
 				wd.log_date DESC)
 		ORDER BY 
 				log_date DESC
-		"""%(condition_date, condition_employee), as_dict=1,
+		"""%(condition_empl_correction, condition_date, condition_employee), as_dict=1,
 	)
 
 	
