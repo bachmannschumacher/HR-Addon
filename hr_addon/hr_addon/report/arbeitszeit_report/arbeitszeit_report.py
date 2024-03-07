@@ -37,7 +37,7 @@ def execute(filters=None):
 
 	employee_id = get_employee_id()
 	condition_employee += f" AND wd.employee = '{employee_id}'"
-	condition_empl_correction += f"AND employee = '{empid}'"
+	condition_empl_correction += f"AND employee = '{employee_id}'"
 
 	# if filters.get("employee_id"):
 		# empid = filters.get("employee_id")
