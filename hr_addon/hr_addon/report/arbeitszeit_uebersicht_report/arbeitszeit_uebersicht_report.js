@@ -8,7 +8,7 @@ frappe.query_reports["Arbeitszeit Uebersicht Report"] = {
 			"fieldname": "date_from_filter",
 			"label": __("From Date"),
 			"fieldtype": "Date",
-			"default": frappe.format('2024-01-01', {fieldtype: 'Date'}),
+			"default": frappe.datetime._date('2024-01-01'),
 			"reqd": 1,
 			"width": "35px"
 		},
@@ -22,7 +22,7 @@ frappe.query_reports["Arbeitszeit Uebersicht Report"] = {
 		},
 		{
 			"fieldname": "employee_id",
-			"label": __("Employee Id"),
+			"label": __("Mitarbeiter"),
 			"fieldtype": "Link",
 			"options": "Employee",
 			"reqd": 0,
@@ -38,7 +38,7 @@ frappe.query_reports["Arbeitszeit Uebersicht Report"] = {
 		},
 	],
 	"formatter": function (value, row, column, data, default_formatter) {
-
+		
 		value = default_formatter(value, row, column, data);
 
 		if (column.fieldname == "name") {

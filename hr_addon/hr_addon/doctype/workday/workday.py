@@ -24,6 +24,7 @@ def process_bulk_workday(data):
 		data = json.loads(data)
 	data = frappe._dict(data)
 	company = frappe.get_value('Employee', data.employee, 'company')
+	frappe.logger().debug({"error": data})
 	if not data.unmarked_days:
 		frappe.throw(_("Please select a date"))
 		return
