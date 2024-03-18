@@ -4,3 +4,4 @@
 *.swp
 tags
 hr_addon/docs/current
+node_modules

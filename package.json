@@ -1,0 +1,13 @@
+{
+  "name": "hr_addon",
+  "version": "0.3.2",
+  "description": "BachmannSchumacher ERPnext HR_Addon (forked from phamos-eu/HR-Addon)",
+  "main": "index.js",
+  "repository": "https://github.com/bachmannschumacher/HR-Addon",
+  "author": "Thomas Rehm <thomas.rehm89@gmail.com>",
+  "license": "MIT",
+  "private": true,
+  "devDependencies": {
+    "standard-version": "^9.5.0"
+  }
+}
