@@ -12,9 +12,35 @@ from datetime import date,datetime
 
 from hr_addon.hr_addon.api.utils import view_actual_employee_log, get_actual_employee_log_bulk, date_is_in_holiday_list
 
+# helper method
+class AttrDict(dict):
+	def __getattr__(self, key):
+		return self[key]
+
+	def __setattr__(self, key, value):
+		self[key] = value
 
 class Workday(Document):
 	pass
+
+@frappe.whitelist()
+# reprocess workdays, so user does not manually need to delete the existing records
+def re_process_bulk_workday(employee, from_day, to_day):
+	existingrecords = frappe.get_list("Workday", fields=['log_date','employee','name'], filters=[
+		["log_date",">=",from_day],
+		["log_date","<=",to_day],
+		["employee","=",employee]
+	])
+	for day in existingrecords:
+		day = frappe.get_doc('Workday', day.name)
+		day.delete()
+	
+	data = AttrDict()
+	data.employee = employee
+	data.unmarked_days = get_unmarked_range(employee, from_day, to_day)
+
+	return process_bulk_workday(data)
+
 #mark_bulk_attendance
 @frappe.whitelist()
 def process_bulk_workday(data):
@@ -60,7 +86,9 @@ def process_bulk_workday(data):
 			workday.expected_break_hours = 0
 			workday.total_break_seconds = 0
 			# workday.actual_working_hours = 0
-		if float(workday.hours_worked) < 6:
+		
+		# important, for german law it needs to be less or equal 6 hours for break time to be not required
+		if float(workday.hours_worked) <= 6:
 			wwh = frappe.db.get_list(doctype="Weekly Working Hours", filters={"employee": workday.employee}, fields=["name", "no_break_hours"])
 			no_break_hours = True if len(wwh) > 0 and wwh[0]["no_break_hours"] == 1 else False
 			if no_break_hours:
@@ -69,7 +97,7 @@ def process_bulk_workday(data):
 				workday.actual_working_hours = workday.hours_worked
 
 		# for german law we need to apply 45 min of break hours if working over 9 hours
-		if float(workday.hours_worked) > 9:
+		if float(workday.hours_worked) >= 9:
 			wwh = frappe.db.get_list(doctype="Weekly Working Hours", filters={"employee": workday.employee}, fields=["name", "additional_break_long_hours"])
 			
 			additional_break_long_hours = True if len(wwh) > 0 and wwh[0]["additional_break_long_hours"] == 1 else False
