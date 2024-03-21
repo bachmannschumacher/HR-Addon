@@ -23,7 +23,8 @@ def execute(filters=None):
 	# {'fieldname':'target_hours','label':'Target Hours','width':80},
 	columns = [		
 		{'fieldname':'employee','label':'Mitarbeiter', 'fieldtype': 'Link', 'options': 'Employee','width':140},
-		{'fieldname':'log_date','label':'Datum','fieldtype':'Date','width':110},		
+		{'fieldname':'log_date','label':'Datum','fieldtype':'Date','width':110},
+		{'fieldname': 'weekday', 'label': 'Wochentag', 'fieldtype':'Text'},
 		{'fieldname':'status','label':'Status', "width": 80},
 		{'fieldname':'total_work_seconds','label':_('Arbeitszeit inkl. Pause'), "width": 100, },
 		# {'fieldname':'total_break_seconds','label':_('Break Hours'), "width": 110, },
@@ -79,6 +80,7 @@ def execute(filters=None):
 		(SELECT 
 				name as name,
 				NULL as log_date,
+				NULL as weekday,
 				employee, 
 				NULL as attendance, 
 				"Korrektur" as status, 
@@ -111,7 +113,8 @@ def execute(filters=None):
 	
 		(SELECT 
 				wd.name, 
-				wd.log_date, 
+				wd.log_date,
+				wd.log_date AS weekday,
 				wd.employee, 
 				wd.attendance, 
 				wd.status, 

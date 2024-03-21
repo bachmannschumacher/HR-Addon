@@ -35,6 +35,15 @@ frappe.query_reports["Arbeitszeit Report"] = {
 
 		value = default_formatter(value, row, column, data);
 
+		// Wochentag anzeigen
+		if (column.fieldname == "weekday") {
+			const weekday = ["Sonntag", "Montag", "Dienstag", "Mittwoch", "Donnerstag", "Freitag", "Samstag"];
+			const d = new Date(`${value}`);
+			console.log("wochentag", value)
+			let day = weekday[d.getDay()];
+			return day	
+		}
+
 		if (column.fieldname == "name") {
 			//if (!(row ===undefined)) console.log('yt: ',row.meta);
 

@@ -9,10 +9,10 @@ from hr_addon.hr_addon.doctype.workday.workday import get_unmarked_range, proces
 class HRAddonSettings(Document):
 	def before_save(self):
 		# remove the old ics file
-		old_doc = self.get_doc_before_save()
-		old_file_name = old_doc.name_of_calendar_export_ics_file
-		if old_file_name != self.name_of_calendar_export_ics_file:
-			os.remove("{}/public/files/{}.ics".format(frappe.utils.get_site_path(), old_file_name))
+		# old_doc = self.get_doc_before_save()
+		# old_file_name = old_doc.name_of_calendar_export_ics_file
+		# if old_file_name != self.name_of_calendar_export_ics_file:
+		# 	os.remove("{}/public/files/{}.ics".format(frappe.utils.get_site_path(), old_file_name))
 
 		# remove also the Urlaubskalender.ics, if exist
 		if os.path.exists("{}/public/files/Urlaubskalender.ics".format(frappe.utils.get_site_path())):
@@ -60,9 +60,9 @@ def generate_workdays_scheduled_job():
 
 
 @frappe.whitelist()
-def generate_workdays_for_past_7_days_now():
+def generate_workdays_for_past_7_days_now(days=7):
 	today = frappe.utils.datetime.datetime.now()
-	a_week_ago = today - frappe.utils.datetime.timedelta(days=7)
+	a_week_ago = today - frappe.utils.datetime.timedelta(days)
 	employees = frappe.db.get_list("Employee", filters={'status': 'Active'})
 	for employee in employees:
 		employee_name = employee["name"]

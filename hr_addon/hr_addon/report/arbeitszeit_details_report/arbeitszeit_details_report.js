@@ -10,7 +10,7 @@ frappe.query_reports["Arbeitszeit Details Report"] = {
 			"fieldtype": "Read Only",
 			// "fieldtype": "Date",
 			// "default": frappe.datetime.add_months(frappe.datetime.get_today(), -1),
-			"default": frappe.format('2024-01-01', {fieldtype: 'Date'}),
+			"default": frappe.format('2024-01-01', { fieldtype: 'Date' }),
 			"reqd": 1,
 			"width": "35px"
 		},
@@ -24,9 +24,10 @@ frappe.query_reports["Arbeitszeit Details Report"] = {
 		},
 		{
 			"fieldname": "employee_id",
-			"label": __("Employee Id"),
+			"label": __("Mitarbeiter"),
 			"fieldtype": "Link",
 			"options": "Employee",
+			"filters": { 'status': 'Active' },
 			"reqd": 1,
 			"width": "35px"
 		},
@@ -34,6 +35,15 @@ frappe.query_reports["Arbeitszeit Details Report"] = {
 	"formatter": function (value, row, column, data, default_formatter) {
 
 		value = default_formatter(value, row, column, data);
+
+		// Wochentag anzeigen
+		if (column.fieldname == "weekday") {
+			const weekday = ["Sonntag", "Montag", "Dienstag", "Mittwoch", "Donnerstag", "Freitag", "Samstag"];
+			const d = new Date(`${value}`);
+			console.log("wochentag", value)
+			let day = weekday[d.getDay()];
+			return day	
+		}
 
 		if (column.fieldname == "name") {
 			//if (!(row ===undefined)) console.log('yt: ',row.meta);
@@ -110,7 +120,7 @@ frappe.query_reports["Arbeitszeit Details Report"] = {
 		}
 
 		if (column.fieldname == "actual_diff_log" || column.fieldname == "total_actual_diff_log" || column.fieldname == "flexitime_correction") {
-		// if (column.fieldname == "actual_diff_log" || column.fieldname == "flexitime_correction") {
+			// if (column.fieldname == "actual_diff_log" || column.fieldname == "flexitime_correction") {
 			if (value < 0) {
 				value = "<span style='color:#FF8C00'>" + '-' + hitt(value, true) + "</span>";
 

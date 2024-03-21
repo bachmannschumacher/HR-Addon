@@ -1,0 +1,12 @@
+{
+  "bumpFiles": [
+    {
+      "filename": "package.json",
+      "type": "json"
+    },
+    {
+      "filename": "bachmannschumacher/__init__.py",
+      "updater": "bachmannschumacher/updateinitpyversion.js"
+    }
+  ]
+}
