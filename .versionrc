@@ -5,8 +5,8 @@
       "type": "json"
     },
     {
-      "filename": "bachmannschumacher/__init__.py",
-      "updater": "bachmannschumacher/updateinitpyversion.js"
+      "filename": "hr_addon/__init__.py",
+      "updater": "hr_addon/updateinitpyversion.js"
     }
   ]
 }

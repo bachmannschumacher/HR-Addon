@@ -60,9 +60,9 @@ def generate_workdays_scheduled_job():
 
 
 @frappe.whitelist()
-def generate_workdays_for_past_7_days_now(days=7):
+def generate_workdays_for_past_7_days_now(daysCount=7):
 	today = frappe.utils.datetime.datetime.now()
-	a_week_ago = today - frappe.utils.datetime.timedelta(days)
+	a_week_ago = today - frappe.utils.datetime.timedelta(days=int(daysCount))
 	employees = frappe.db.get_list("Employee", filters={'status': 'Active'})
 	for employee in employees:
 		employee_name = employee["name"]

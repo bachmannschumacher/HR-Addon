@@ -6,20 +6,20 @@ frappe.ui.form.on('HR Addon Settings', {
 
 	// }
 
-	validate: function(frm){
-		if (frm.doc.name_of_calendar_export_ics_file.length == 0){
+	validate: function (frm) {
+		if (frm.doc.name_of_calendar_export_ics_file.length == 0) {
 			const randomString = generateRandomString(24);
 			frm.set_value("name_of_calendar_export_ics_file", randomString)
 		}
 	},
 
-	after_save: function(frm){
-		if (frm.doc.name_of_calendar_export_ics_file.length < 24){
+	after_save: function (frm) {
+		if (frm.doc.name_of_calendar_export_ics_file.length < 24) {
 			frappe.msgprint("The filename is less than 24 characters. Please, consider to have a longer filename or leave it empty to get a random filename.")
 		}
 	},
 
-	download_ics_file: function(frm){
+	download_ics_file: function (frm) {
 		frappe.call({
 			method: 'hr_addon.hr_addon.doctype.hr_addon_settings.hr_addon_settings.download_ics_file',
 			callback: function (r) {
@@ -32,9 +32,10 @@ frappe.ui.form.on('HR Addon Settings', {
 		});
 	},
 
-	generate_workdays_for_past_7_days_now: function(frm){
+	generate_workdays_for_past_7_days_now: function (frm) {
 		frappe.call({
 			method: "hr_addon.hr_addon.doctype.hr_addon_settings.hr_addon_settings.generate_workdays_for_past_7_days_now",
+			args: { daysCount: 7 }
 		}).then(r => {
 			frappe.msgprint("The workdays have been generated.")
 		})
@@ -44,11 +45,11 @@ frappe.ui.form.on('HR Addon Settings', {
 function generateRandomString(length) {
 	const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
 	let randomString = '';
-	
+
 	for (let i = 0; i < length; i++) {
-	  const randomIndex = Math.floor(Math.random() * characters.length);
-	  randomString += characters.charAt(randomIndex);
+		const randomIndex = Math.floor(Math.random() * characters.length);
+		randomString += characters.charAt(randomIndex);
 	}
-	
+
 	return randomString;
 }
