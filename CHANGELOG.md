@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [0.5.0](https://github.com/bachmannschumacher/HR-Addon/compare/v0.4.0...v0.5.0) (2024-03-23)
+
+
+### Bug Fixes
+
+* fix function for automated workday generation ([a7ab89f](https://github.com/bachmannschumacher/HR-Addon/commit/a7ab89f80b7b040f637c1653dcad73dd936cd3ce))
+
 ## [0.4.0](https://github.com/bachmannschumacher/HR-Addon/compare/v0.3.3...v0.4.0) (2024-03-21)
 
 
